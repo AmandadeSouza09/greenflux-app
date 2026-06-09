@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenFlux - Seu Delivery de Combustível</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sA+o5m3vM5a4/0kxaCW7RJhFt0VrVhXZ8A4Qv+JbjnM=" crossorigin="" />
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo">
+                <img src="DESIGNER.png" width="100" height="100" alt="GreenFlux Logo" class="logo-image">
+                <div>
+                    <span class="logo-text">GreenFlux</span>
+                
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="#home">Início</a>
+                <a href="#how-it-works">Como Funciona</a>
+                <a href="#objetivo">Objetivo</a>
+                <a href="#contact">Contato</a>
+            </nav>
+            <div class="header-actions">
+                <a class="btn-login" href="login.html">Entrar</a>
+                <a class="btn-create-account" href="register.html">Criar conta</a>
+                <button id="theme-toggle" class="btn-theme" aria-label="Alternar tema">☾</button>
+                <button class="btn-cart" type="button" aria-label="Carrinho">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-count">0</span>
+                </button>
+                <div class="mobile-menu-wrapper">
+                    <button id="menu-toggle" class="btn-menu" aria-label="Abrir menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="mobile-menu">
+                        <a href="login.html">Entrar</a>
+                        <a href="register.html">Criar conta</a>
+                        <button class="mobile-cart-link" type="button" aria-label="Carrinho">
+                            <span class="cart-icon">🛒</span>
+                            <span>Carrinho</span>
+                            <span class="mobile-cart-count">0</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Combustível,<br><span>entregue onde você estiver</span></h1>
+                <p>Abasteça seu veículo sem sair de casa ou do trabalho. Entrega rápida e segura.</p>
+                <div class="search-box">
+                   
+                </div>
+            </div>
+        </div>
+        
+    </section>
+
+    <section id="transporter-dashboard" class="hidden transporter-dashboard">
+        <div class="container">
+            <div class="section-header">
+                <h2>Painel do Transportador</h2>
+                <p>Solicitações de entrega próximas e status</p>
+            </div>
+            <div class="transport-list" id="transport-list">
+                <!-- itens de solicitação serão inseridos aqui dinamicamente -->
+            </div>
+        </div>
+    </section>
+ <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>Como Funciona</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">📍</div>
+                    <h3>Digite sua localização</h3>
+                    <p>Informe onde seu veículo está</p>
+                </div>
+                <div class="step-connector">→</div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">⛽</div>
+                    <h3>Escolha o combustível</h3>
+                    <p>Selecione o tipo e quantidade</p>
+                </div>
+                <div class="step-connector">→</div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">🛒</div>
+                    <h3>Faça seu pedido</h3>
+                    <p>Confirme o tipo de combustível</p>
+                </div>
+                <div class="step-connector">→</div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">🚚</div>
+                    <h3>Entrega no local</h3>
+                    <p>Abastecemos onde você estiver</p>
+                </div>
+            </div>
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tipos de Combustível</h2>
+            </div>
+            <div class="category-grid">
+                <button type="button" class="category-card" data-fuel="Gasolina">
+                    <span class="category-icon">⛽</span>
+                    <strong>Gasolina</strong>
+                </button>
+                <button type="button" class="category-card" data-fuel="Etanol">
+                    <span class="category-icon">⚡</span>
+                    <strong>Etanol</strong>
+                </button>
+                <button type="button" class="category-card" data-fuel="Elétrico">
+                    <span class="category-icon">🔋</span>
+                    <strong>Elétrico</strong>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="purchase-section hidden" id="purchase-section">
+        <div class="purchase-panel">
+            <div class="purchase-header">
+                <h2>Pedido de Combustível</h2>
+                <button class="close-purchase" id="close-purchase" aria-label="Fechar pedido">✕</button>
+            </div>
+            <p class="purchase-subtitle">Selecione a variante de combustível, informe a quantidade e a localização para entrega.</p>
+
+            <div class="purchase-row">
+                <label for="selected-fuel">Combustível</label>
+                <div id="selected-fuel" class="selected-fuel">—</div>
+            </div>
+
+            <div class="purchase-row fuel-subtype-row">
+                <label for="fuel-subtype">Tipo de gasolina</label>
+                <select id="fuel-subtype" class="selected-fuel">
+                    <option value="" disabled selected>Selecione a gasolina</option>
+                </select>
+            </div>
+
+            <div class="purchase-row">
+                <label for="money-input">Valor (R$)</label>
+                <input type="text" id="money-input" placeholder="Ex: 45,75" />
+            </div>
+
+            <div class="purchase-row">
+                <label for="liters-input">Quantidade (litros / kWh)</label>
+                <input type="number" id="liters-input" min="0.1" step="0.01" placeholder="Ex: 20" />
+            </div>
+
+            <div class="purchase-row">
+                <label for="location-input">Localização de entrega</label>
+                <select id="location-input" class="selected-fuel">
+                    <option value="" disabled selected>Selecione seu local</option>
+                    <option value="Gerando Falcões">Gerando Falcões</option>
+                    <option value="Praça da Bíblia">Praça da Bíblia</option>
+                    <option value="Jardim Helena">Jardim Helena</option>
+                    <option value="Vila Julia">Vila Julia</option>
+                    <option value="Avenida 18 de Julho">Avenida 18 de Julho</option>
+                </select>
+            </div>
+
+            <div class="purchase-row" id="freight-calculation" style="background: #f5f5f5; padding: 12px; border-radius: 6px; display: none;">
+                <div style="font-size: 14px; color: #666; margin-bottom: 8px;">
+                    <strong>Descrição:</strong>
+                </div>
+                <div id="calc-description" style="font-size: 13px; line-height: 1.7; color: #333;">
+                    <div>- Distância: <strong id="calc-distance">-</strong> km</div>
+                    <div>- Taxa (<span id="calc-tax-label">-</span>): <strong id="calc-tax">-</strong></div>
+                    <div>- Frete fixo: <strong id="calc-freight">-</strong></div>
+                    <div>- Subtotal (combustível): <strong id="calc-subtotal">-</strong></div>
+                </div>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd;">
+                    <strong style="font-size: 15px;">Total estimado: <span id="calc-total" style="color: #2ecc71;">-</span></strong>
+                </div>
+            </div>
+
+            <div class="purchase-actions">
+                <button type="button" class="btn-secondary" id="cancel-purchase">Cancelar</button>
+                <button type="button" class="btn-primary" id="add-to-cart">Adicionar ao carrinho</button>
+            </div>
+            <p class="purchase-note">Após adicionar ao carrinho, clique no carrinho para escolher o pagamento.</p>
+        </div>
+    </section>
+
+    <section class="payment-section hidden" id="payment-section">
+        <div class="payment-panel">
+            <div class="payment-header">
+                <h2>Pagamento</h2>
+                <button class="close-payment" id="close-payment" aria-label="Fechar pagamento">✕</button>
+            </div>
+            <div class="payment-summary">
+                <div class="payment-row"><strong>Combustível</strong><span id="summary-fuel"></span></div>
+                <div class="payment-row"><strong>Quantidade</strong><span id="summary-liters"></span></div>
+                <div class="payment-row"><strong>Distância</strong><span id="summary-distance"></span></div>
+                <div class="payment-row"><strong>Localização</strong><span id="summary-location"></span></div>
+                <div class="payment-row"><strong>Subtotal (combustível)</strong><span id="summary-subtotal"></span></div>
+                <div class="payment-row"><strong>Taxa</strong><span id="summary-tax"></span></div>
+                <div class="payment-row"><strong>Frete fixo</strong><span id="summary-freight"></span></div>
+                <div class="payment-row"><strong>Total do pedido</strong><span id="summary-total"></span></div>
+                <div class="payment-row"><strong>Tempo estimado</strong><span id="summary-time"></span></div>
+            </div>
+            <div class="payment-options">
+                <div class="payment-method-row" data-payment="PIX">
+                    <div>
+                        <h3>PIX</h3>
+                        <p>Sem taxa adicional</p>
+                    </div>
+                    <span id="summary-pix"></span>
+                </div>
+                <div class="payment-method-row" data-payment="Débito">
+                    <div>
+                        <h3>Débito</h3>
+                        <p>Taxa de 1%</p>
+                    </div>
+                    <span id="summary-debit"></span>
+                </div>
+                <div class="payment-method-row" data-payment="Crédito">
+                    <div>
+                        <h3>Crédito</h3>
+                        <p>Taxa de 3%</p>
+                    </div>
+                    <span id="summary-credit"></span>
+                </div>
+                <div class="payment-method-row" data-payment="Dinheiro">
+                    <div>
+                        <h3>Dinheiro</h3>
+                        <p>Desconto de 2%</p>
+                    </div>
+                    <span id="summary-cash"></span>
+                </div>
+            </div>
+            <button id="checkout-button" class="hidden">Finalizar pagamento</button>
+        </div>
+    </section>
+
+    <section class="restaurants">
+        <div class="container">
+            <h2>Postos parceiros</h2>
+            <div class="restaurant-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-image" style="background: #E8F5E9;">
+                        <span class="restaurant-badge">⭐ 4.8</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3>Posto Verde</h3>
+                        <p class="cuisine">Gasolina • Diesel • Etanol</p>
+                        <p class="delivery-time">🚚 15-25 min</p>
+                    </div>
+                </div>
+                <div class="restaurant-card">
+                    <div class="restaurant-image" style="background: #E8F5E9;">
+                        <span class="restaurant-badge">⭐ 4.6</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3>EcoPosto</h3>
+                        <p class="cuisine">GNV • Elétrico</p>
+                        <p class="delivery-time">🚚 20-30 min</p>
+                    </div>
+                </div>
+                <div class="restaurant-card">
+                    <div class="restaurant-image" style="background: #E8F5E9;">
+                        <span class="restaurant-badge">⭐ 4.9</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3>AutoFuel</h3>
+                        <p class="cuisine">Combustíveis • Lubrificantes</p>
+                        <p class="delivery-time">🚚 10-20 min</p>
+                    </div>
+                </div>
+                <div class="restaurant-card">
+                    <div class="restaurant-image" style="background: #E8F5E9;">
+                        <span class="restaurant-badge">⭐ 4.7</span>
+                    </div>
+                    <div class="restaurant-info">
+                        <h3>Power Fuel</h3>
+                        <p class="cuisine">Diesel • Aditivados</p>
+                        <p class="delivery-time">🚚 25-35 min</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mapa com Geolocalização -->
+    <section id="map-section" class="map-section">
+        <div class="container">
+            <h2>📍 Encontre Postos Próximos</h2>
+            
+            <div class="map-actions">
+                <button id="open-poa-map" class="btn-map">🗺️ Mapa de Poá</button>
+            </div>
+
+            <div class="map-panel hidden" id="poa-map-panel">
+                <div class="map-image-panel">
+                    <button id="close-poa-map" class="map-close-btn" aria-label="Fechar mapa">✕</button>
+                    <div class="map-controls">
+                        <button id="zoom-in" class="zoom-button" aria-label="Aumentar zoom">+</button>
+                        <button id="zoom-out" class="zoom-button" aria-label="Diminuir zoom">−</button>
+                    </div>
+                    <div class="map-image-wrap">
+                        <img src="MapaPoá.png" alt="Mapa de Poá" class="map-thumbnail" id="poa-map-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Objectives Section -->
+    <section id="objetivo" class="objectives">
+        <div class="container">
+            <h2>🎯 Objetivo & Problema</h2>
+            <p class="objectives-subtitle">Transformando o abastecimento em um serviço sob demanda</p>
+            
+            <div class="objectives-grid">
+                <div class="objectives-card problems">
+                    <h3>⚠️ Problema</h3>
+                    <ul>
+                        <li>📌 Motoristas enfrentam <strong>pane seca</strong> ou falta de combustível em locais sem acesso rápido a postos.</li>
+                        <li>📌 Perda de tempo em <strong>filas e deslocamentos</strong>.</li>
+                        <li>📌 <strong>Riscos de segurança</strong> ao abastecer em horários ou locais perigosos.</li>
+                        <li>📌 Empresas com frotas sofrem <strong>prejuízos operacionais</strong> quando veículos ficam parados.</li>
+                        <li>📌 Falta de infraestrutura para <strong>carros elétricos</strong>.</li>
+                    </ul>
+                    <div class="consequences">
+                        <h4>📋 Consequências:</h4>
+                        <p>Estresse, atrasos, prejuízo financeiro, acidentes e impacto na mobilidade urbana.</p>
+                    </div>
+                </div>
+                
+                <div class="objectives-card goals">
+                    <h3>✅ Objetivos Principais</h3>
+                    <ul>
+                        <li>🔹 <strong>Praticidade:</strong> Eliminar filas e deslocamentos até postos.</li>
+                        <li>🔹 <strong>Segurança:</strong> Evitar que motoristas precisem parar em locais perigosos ou sair a pé em busca de combustível.</li>
+                        <li>🔹 <strong>Eficiência econômica:</strong> Motoristas de aplicativo e empresas de frota economizam tempo e aumentam produtividade.</li>
+                        <li>🔹 <strong>Inovação:</strong> Criar um novo mercado de delivery de energia e combustível, com parcerias estratégicas.</li>
+                    </ul>
+                    <div class="summary">
+                        <h4>💡 Em resumo:</h4>
+                        <p>Uma solução tecnológica para mobilidade urbana, que transforma o abastecimento em um serviço sob demanda, semelhante ao que já acontece com delivery de comida ou transporte por aplicativos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="logo">
+                        <span class="logo-icon">⛽</span>
+                        <span class="logo-text">GreenFuel</span>
+                    </div>
+                    <p>Sua combustível entregue com rapidez e sustentabilidade.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Empresa</h4>
+                    <a href="#">Sobre nós</a>
+                    <a href="#">Carreiras</a>
+                    <a href="#">Blog</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Para Você</h4>
+                    <a href="#">Postos parceiros</a>
+                    <a href="#">Entregadores</a>
+                    <a href="#">Ajuda</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <a href="#">📧 contato@greenfuel.com.br</a>
+                    <a href="#">📞 0800 123 4567</a>
+                    <div class="social-links">
+                        <a href="#">📘</a>
+                        <a href="#">📷</a>
+                        <a href="#">🐦</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+    (function(){
+        function applyTheme(theme){
+            document.documentElement.setAttribute('data-theme', theme);
+            var btn = document.getElementById('theme-toggle');
+            if(btn) btn.textContent = theme === 'dark' ? '☀' : '☾';
+            try{ localStorage.setItem('theme', theme); }catch(e){}
+        }
+        document.addEventListener('DOMContentLoaded', function(){
+            var btn = document.getElementById('theme-toggle');
+            var saved = null;
+            try{ saved = localStorage.getItem('theme'); }catch(e){}
+            var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var initial = saved || (prefersDark ? 'dark' : 'light');
+            applyTheme(initial);
+            if(btn){
+                btn.addEventListener('click', function(){
+                    var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+                    applyTheme(current === 'dark' ? 'light' : 'dark');
+                });
+            }
+        });
+    })();
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-oYaHZHh7EevgCphUzk13z4UfDOEkg8P3qUuZHn2V+8o=" crossorigin=""></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

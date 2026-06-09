@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - GreenFlux</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #F1F8E9 0%, #C8E6C9 100%);
+            padding: 20px;
+        }
+        .register-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        .register-box h2 {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #2E7D32;
+        }
+        .password-wrapper { position: relative; }
+        .password-wrapper input { padding-right: 44px; }
+        .btn-toggle-password {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 6px;
+            line-height: 1;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #2E7D32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover {
+            background: #1B5E20;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: #2E7D32;
+        }
+        .feedback {
+            margin-top: 18px;
+            font-size: 0.95rem;
+            color: #333;
+            text-align: center;
+        }
+        html[data-theme="dark"] .register-container {
+            background: #101216;
+        }
+        html[data-theme="dark"] .register-box {
+            background: #181c23;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+        html[data-theme="dark"] .register-box h2 {
+            color: #ffffff;
+        }
+        html[data-theme="dark"] .form-group label,
+        html[data-theme="dark"] .feedback,
+        html[data-theme="dark"] .back-link {
+            color: #ffffff;
+        }
+        html[data-theme="dark"] .form-group input {
+            background: #0f1220;
+            border-color: #2e7d32;
+            color: #ffffff;
+        }
+        html[data-theme="dark"] .form-group input::placeholder {
+            color: #b0b8c9;
+        }
+        html[data-theme="dark"] .btn-submit {
+            background: #2e7d32;
+            color: #ffffff;
+        }
+        html[data-theme="dark"] .btn-submit:hover {
+            background: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <h2>Cadastrar nova conta</h2>
+            <form id="register-form" action="#">
+                <div class="form-group">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="senha" name="senha" required>
+                        <button type="button" class="btn-toggle-password" data-target="senha" aria-label="Mostrar senha">👁️</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmSenha">Confirmar senha</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmSenha" name="confirmSenha" required>
+                        <button type="button" class="btn-toggle-password" data-target="confirmSenha" aria-label="Mostrar senha">👁️</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="role">Tipo de conta</label>
+                    <select id="role" name="role">
+                        <option value="cliente" selected>Cliente</option>
+                        <option value="transportador">Transportador</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Criar conta</button>
+                <div id="register-feedback" class="feedback"></div>
+            </form>
+            <a href="login.html" class="back-link">← Já tenho uma conta</a>
+        </div>
+    </div>
+    <script>
+        (function(){
+            try {
+                var savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                }
+            } catch (e) {
+                console.warn('Não foi possível carregar o tema:', e);
+            }
+        })();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.btn-toggle-password').forEach(btn => {
+                const targetId = btn.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                if (!input) return;
+                btn.addEventListener('click', () => {
+                    const isPassword = input.type === 'password';
+                    input.type = isPassword ? 'text' : 'password';
+                    btn.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
+                    btn.textContent = isPassword ? '◡' : '👁️';
+                });
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        btn.click();
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('register-form');
+            const feedback = document.getElementById('register-feedback');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const nome = document.getElementById('nome').value;
+                const email = document.getElementById('email').value;
+                const senha = document.getElementById('senha').value;
+                const confirmSenha = document.getElementById('confirmSenha').value;
+                const role = document.getElementById('role').value;
+                
+                const result = registerUser({ nome, email, senha, confirmSenha, role });
+                
+                if (result.success) {
+                    feedback.textContent = result.message;
+                    feedback.style.color = '#2e7d32';
+                    form.reset();
+                    setTimeout(() => {
+                        window.location.href = 'Index.HTML';
+                    }, 1500);
+                } else {
+                    feedback.textContent = result.message;
+                    feedback.style.color = '#c62828';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

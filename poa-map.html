@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Poá - Leaflet</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-o9N1j8hWz3H5XQfW3a2U9m3sFe4Yzh0Qf/5QN+v+rbQ=" crossorigin="" />
+    <style>
+        /* O mapa ocupa toda a tela */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        .leaflet-popup-content-wrapper {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contêiner do mapa -->
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-o9N1j8hWz3H5XQfW3a2U9m3sFe4Yzh0Qf/5QN+v+rbQ=" crossorigin=""></script>
+    <script>
+        // Coordenadas centrais de Poá, São Paulo
+        const poaCoords = [-23.5286, -46.3440];
+
+        // Cria o mapa centralizado em Poá com zoom inicial 14
+        const map = L.map('map').setView(poaCoords, 14);
+
+        // Adiciona camada de tiles do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Marcador central com popup
+        L.marker(poaCoords).addTo(map)
+            .bindPopup('Poá - São Paulo')
+            .openPopup();
+
+        // Marcador extra na região de Poá
+        L.marker([-23.5300, -46.3400]).addTo(map)
+            .bindPopup('Ponto extra em Poá');
+
+        // Configurações de interação padrão do Leaflet
+        map.dragging.enable();
+        map.scrollWheelZoom.enable();
+        map.doubleClickZoom.enable();
+    </script>
+</body>
+</html>

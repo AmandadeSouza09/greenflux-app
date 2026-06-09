@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Cartão - GreenFlux</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #F1F8E9 0%, #C8E6C9 100%);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+            background: #ffffff;
+            color: #333333;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2E7D32;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #2E7D32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #1B5E20;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #2E7D32;
+        }
+
+        .feedback {
+            margin-top: 18px;
+            font-size: 0.95rem;
+            color: #333333;
+            text-align: center;
+        }
+
+        html[data-theme="dark"] .login-container {
+            background: linear-gradient(135deg, #10131b 0%, #162027 100%);
+        }
+
+        html[data-theme="dark"] .login-box {
+            background: #12171f;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        html[data-theme="dark"] .login-box h2 {
+            color: #81c784;
+        }
+
+        html[data-theme="dark"] .form-group label {
+            color: #e7e7e7;
+        }
+
+        html[data-theme="dark"] .form-group input {
+            background: #181f28;
+            color: #e7e7e7;
+            border-color: #2e7d32;
+        }
+
+        html[data-theme="dark"] .form-group input::placeholder {
+            color: #8f9bb3;
+        }
+
+        html[data-theme="dark"] .btn-submit {
+            background: #66bb6a;
+        }
+
+        html[data-theme="dark"] .btn-submit:hover {
+            background: #4caf50;
+        }
+
+        html[data-theme="dark"] .back-link {
+            color: #c7c7c7;
+        }
+
+        html[data-theme="dark"] .back-link:hover {
+            color: #81c784;
+        }
+
+        html[data-theme="dark"] .feedback {
+            color: #c7c7c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Cadastro de Cartão</h2>
+            <form id="card-form" action="/register-card" method="post">
+                <div class="form-group">
+                    <label for="cardholder">Nome do titular</label>
+                    <input type="text" id="cardholder" name="cardholder" required>
+                </div>
+                <div class="form-group">
+                    <label for="card-number">Número do cartão</label>
+                    <input type="text" id="card-number" name="card-number" maxlength="19" placeholder="0000 0000 0000 0000" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiry">Validade (MM/AA)</label>
+                    <input type="text" id="expiry" name="expiry" maxlength="5" placeholder="MM/AA" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="password" id="cvv" name="cvv" maxlength="4" placeholder="123" required>
+                </div>
+                <button type="submit" class="btn-submit">Cadastrar Cartão</button>
+                <div id="card-feedback" class="feedback"></div>
+            </form>
+            <a href="login.html" class="back-link">← Voltar para login</a>
+        </div>
+    </div>
+    <script>
+        (function(){
+            try {
+                var savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark' || savedTheme === 'light') {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+            } catch (e) {
+                // Ignora se localStorage não estiver disponível
+            }
+        })();
+
+        const cardForm = document.getElementById('card-form');
+        const cardFeedback = document.getElementById('card-feedback');
+
+        cardForm?.addEventListener('submit', async event => {
+            event.preventDefault();
+            cardFeedback.textContent = '';
+            const response = await fetch('/register-card', {
+                method: 'POST',
+                body: new FormData(cardForm)
+            });
+            const result = await response.json();
+            cardFeedback.style.color = response.ok ? '#2e7d32' : '#c62828';
+            cardFeedback.textContent = result.message || 'Ocorreu um erro ao cadastrar o cartão.';
+            if (response.ok) {
+                cardForm.reset();
+            }
+        });
+    </script>
+</body>
+</html>
